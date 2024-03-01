@@ -14,7 +14,11 @@ const CategoryComponent: React.FC = () => {
     dispatch(getDataCategory());
   }, [dispatch]);
   const onDelete = (id: string) => {
-    axios.delete(`${import.meta.env.VITE_REACT_APP_API}category/${id}`);
+    axios.delete(`${import.meta.env.VITE_REACT_APP_API}category/${id}`, {
+      headers: {
+        Authorization: localStorage.getItem("Authorization"),
+      },
+    });
     swal({
      icon: "success",
      text: "Delete  Berhasil",

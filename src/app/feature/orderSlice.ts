@@ -20,7 +20,14 @@ const initialState: OrderState = {
 export const getDataOrder = createAsyncThunk("order", async (_, thunkAPI) => {
   try {
  
-    const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}orders`);
+    const response = await axios.get(
+      `${import.meta.env.VITE_REACT_APP_API}orders`,
+      {
+        headers: {
+          Authorization: localStorage.getItem("Authorization"),
+        },
+      }
+    );
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {

@@ -8,23 +8,38 @@ const EditCategory = () => {
   const navigate = useNavigate();
   const {id} = useParams();
 
-  const getCategoryById = async ()=> {
+  const getCategoryById = async () => {
     try {
-        const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}category/${id}`)
-       setName(response.data.ct_name)
+      const response = await axios.get(
+        `${import.meta.env.VITE_REACT_APP_API}category/${id}`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("Authorization"),
+          },
+        }
+      );
+      setName(response.data.ct_name);
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
-  }
+  };
   useEffect(() => {
     getCategoryById();
-  },[id])
+  }, [id]);
   const saveProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.put(`${import.meta.env.VITE_REACT_APP_API}category/${id}`, {
-        ct_name: name,
-      });
+      await axios.put(
+        `${import.meta.env.VITE_REACT_APP_API}category/${id}`,
+        {
+          ct_name: name,
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem("Authorization"),
+          },
+        }
+      );
       swal({
         icon: "success",
         text: "berhasil menambahkan data",
@@ -34,6 +49,7 @@ const EditCategory = () => {
       console.log(error);
     }
   };
+  
   return (
     <Form className="mt-4" onSubmit={saveProduct}>
       <h1>Tambah Product</h1>

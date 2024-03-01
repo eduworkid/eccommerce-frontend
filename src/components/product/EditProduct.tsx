@@ -14,7 +14,14 @@ const EditProduct = () => {
   const navigate = useNavigate();
   const {id} = useParams();
   const getProductById = async () => {
-    const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}product/${id}`)
+    const response = await axios.get(
+      `${import.meta.env.VITE_REACT_APP_API}product/${id}`,
+      {
+        headers: {
+          Authorization: localStorage.getItem("Authorization"),
+        },
+      }
+    );
     setName(response.data.pd_name);
     setPrice(response.data.pd_price);
   }
@@ -37,11 +44,19 @@ const EditProduct = () => {
   const saveProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.put(`${import.meta.env.VITE_REACT_APP_API}product/${id}`, {
-        pd_name: name,
-        pd_price: price,
-        pd_ct_id : categoryName
-      });
+      await axios.put(
+        `${import.meta.env.VITE_REACT_APP_API}product/${id}`,
+        {
+          pd_name: name,
+          pd_price: price,
+          pd_ct_id: categoryName,
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem("Authorization"),
+          },
+        }
+      );
       swal({
         icon: "success",
         text: "berhasil menambahkan data",

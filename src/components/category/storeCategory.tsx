@@ -10,9 +10,17 @@ const StoreCategory = () => {
   const saveProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post(`${import.meta.env.VITE_REACT_APP_API}category`, {
-        ct_name: name,
-      });
+      await axios.post(
+        `${import.meta.env.VITE_REACT_APP_API}category`,
+        {
+          ct_name: name,
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem("Authorization"),
+          },
+        }
+      );
       swal({
         icon: "success",
         text: "berhasil menambahkan data",

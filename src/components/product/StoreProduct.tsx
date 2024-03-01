@@ -27,11 +27,19 @@ const StoreProduct = () => {
   const saveProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post(`${import.meta.env.VITE_REACT_APP_API}products`, {
-        pd_name: name,
-        pd_price: price,
-        pd_ct_id : categoryName
-      });
+      await axios.post(
+        `${import.meta.env.VITE_REACT_APP_API}products`,
+        {
+          pd_name: name,
+          pd_price: price,
+          pd_ct_id: categoryName,
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem("Authorization"),
+          },
+        }
+      );
       swal({
         icon: "success",
         text: "berhasil menambahkan data",

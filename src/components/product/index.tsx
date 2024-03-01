@@ -12,57 +12,75 @@ const Product: React.FC = () => {
   useEffect(() => {
     dispatch(getDataProduct());
   }, [dispatch]);
-  const onOrder = (id: string) => {
-     axios.post(`${import.meta.env.VITE_REACT_APP_API}orders/${id}`);
-     swal({
-      icon: "success",
-      text: "Order Berhasil",
-    });
-  }
+  const onOrder = async (id: string) => {
+    try {
+      await axios.post(
+        `${import.meta.env.VITE_REACT_APP_API}orders/${id}`,
+        {},
+        {
+          headers: {
+            Authorization: localStorage.getItem("Authorization"),
+          },
+        }
+      );
+      swal({
+        icon: "success",
+        text: "Order Berhasil",
+      });
+    } catch (error) {
+      swal({
+        icon: "error",
+        text: "Anda Harus Login terlebih Dahulu",
+      });
+    }
+  };
   return (
     <div className="">
-       
-    <MDBTable align='middle'>
-      <MDBTableHead>
-        <tr>
-          <th scope='col'>Product Code</th>
-          <th scope='col'>Name</th>
-          <th scope='col'>Category</th>
-          <th scope='col'>Price</th>
-         
-          <th scope='col'>Actions</th>
-        </tr>
-      </MDBTableHead>
-      {product.map((prod) => (
-      <MDBTableBody>
-        <tr>
-          <td>
-            <div className='d-flex align-items-center'>
-              <div className='ms-3'>
-                <p className='fw-bold mb-1'>{prod.pd_code}</p>
-              </div>
-            </div>
-          </td>
-          <td>
-            <p className='fw-bold mb-1'>{prod.pd_name}</p>
-          </td>
-          <td>
-            <p className='fw-bold mb-1'>{prod.pd_ct_id.ct_name}</p>
-          </td>
-          <td>
-          <p className='text-muted mb-0'>Rp.{prod.pd_price}</p>
-          </td>
-         
-          <td>
-            <MDBBtn color='link' rounded size='sm' onClick={() => onOrder(prod._id)}>
-             order
-            </MDBBtn>
-          </td>
-        </tr>
-        
-      </MDBTableBody>
-      ))}
-    </MDBTable>
+      <MDBTable align="middle">
+        <MDBTableHead>
+          <tr>
+            <th scope="col">Product Code</th>
+            <th scope="col">Name</th>
+            <th scope="col">Category</th>
+            <th scope="col">Price</th>
+
+            <th scope="col">Actions</th>
+          </tr>
+        </MDBTableHead>
+        {product.map((prod) => (
+          <MDBTableBody>
+            <tr key={prod.pd_id}>
+              <td>
+                <div className="d-flex align-items-center">
+                  <div className="ms-3">
+                    <p className="fw-bold mb-1">{prod.pd_code}</p>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <p className="fw-bold mb-1">{prod.pd_name}</p>
+              </td>
+              <td>
+                <p className="fw-bold mb-1">{prod.pd_ct_id.ct_name}</p>
+              </td>
+              <td>
+                <p className="text-muted mb-0">Rp.{prod.pd_price}</p>
+              </td>
+
+              <td>
+                <MDBBtn
+                  color="link"
+                  rounded
+                  size="sm"
+                  onClick={() => onOrder(prod._id)}
+                >
+                  order
+                </MDBBtn>
+              </td>
+            </tr>
+          </MDBTableBody>
+        ))}
+      </MDBTable>
     </div>
   );
 }

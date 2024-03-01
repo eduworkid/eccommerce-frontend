@@ -13,7 +13,11 @@ const ProductManage: React.FC = () => {
     dispatch(getDataProduct());
   }, [dispatch]);
   const onDelete = (id: string) => {
-    axios.delete(`${import.meta.env.VITE_REACT_APP_API}product/${id}`);
+    axios.delete(`${import.meta.env.VITE_REACT_APP_API}product/${id}`, {
+      headers: {
+        Authorization: localStorage.getItem("Authorization"),
+      },
+    });
     swal({
      icon: "success",
      text: "Delete  Berhasil",

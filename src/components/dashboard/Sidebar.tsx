@@ -16,21 +16,25 @@ import {
 import { useNavigate } from "react-router-dom";
 
 export default function Sidebar() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const handleLogout = async () => {
-      event?.preventDefault()
-      try {
-          await axios.post(`${import.meta.env.VITE_REACT_APP_API_AUTH}logout`, {}, {
-              headers: {
-                  'Authorization': localStorage.getItem("Authorization")
-              }
-          });
-          localStorage.removeItem("Authorization");
-          navigate('/login');
-      } catch (error) {
-          console.error('Error logging out:', error);
-      }
+  const handleLogout = async () => {
+    event?.preventDefault();
+    try {
+      await axios.post(
+        `${import.meta.env.VITE_REACT_APP_API_AUTH}logout`,
+        {},
+        {
+          headers: {
+            Authorization: localStorage.getItem("Authorization"),
+          },
+        }
+      );
+      localStorage.removeItem("Authorization");
+      navigate("/login");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
   };
   return (
     <>
@@ -51,76 +55,68 @@ export default function Sidebar() {
               Main Dashboard
             </MDBListGroupItem>
 
-            <MDBListGroupItem
-              tag="a"
-              href="/products"
-              action
-              className="border-0 border-bottom rounded"
-            >
-              <MDBIcon fas icon="chart-area me-3" />
-            Product
-            </MDBListGroupItem>
+            {localStorage.getItem("Authorization") ? (
+              <div>
+                <MDBListGroupItem
+                  tag="a"
+                  href="/products"
+                  action
+                  className="border-0 border-bottom rounded"
+                >
+                  <MDBIcon fas icon="chart-area me-3" />
+                  Product
+                </MDBListGroupItem>
 
-            <MDBListGroupItem
-              tag="a"
-              href="/category"
-              action
-              className="border-0 border-bottom rounded"
-            >
-             <MDBIcon far icon="chart-bar me-3" />
-              Category
-            </MDBListGroupItem>
+                <MDBListGroupItem
+                  tag="a"
+                  href="/category"
+                  action
+                  className="border-0 border-bottom rounded"
+                >
+                  <MDBIcon far icon="chart-bar me-3" />
+                  Category
+                </MDBListGroupItem>
 
-            
-
-            <MDBListGroupItem
-              tag="a"
-              href="/order"
-              action
-              className="border-0 border-bottom rounded"
-            >
-              <MDBIcon fas icon="chart-pie me-3" />
-             Order List
-            </MDBListGroupItem>
-            {localStorage.getItem("Authorization") ? 
-            <div>
-
-<MDBListGroupItem
-              tag="a"
-              href="/profile"
-              action
-              className="border-0 border-bottom rounded"
-            >
-              
-               <MDBIcon fas icon="lock me-3" />
-            Profile
-            </MDBListGroupItem>
-             <MDBListGroupItem
-             tag="a"
-             href="/"
-             action
-             onClick={handleLogout}
-             className="border-0 border-bottom rounded"
-           >
-             <MDBIcon far icon="chart-bar me-3" />
-           logout
-           </MDBListGroupItem>
-        
-          
-            </div>
-            : 
-            <MDBListGroupItem
-              tag="a"
-              href="/login"
-              action
-              className="border-0 border-bottom rounded"
-            >
-              
-               <MDBIcon fas icon="lock me-3" />
-            login
-            </MDBListGroupItem>
-           
-            }
+                <MDBListGroupItem
+                  tag="a"
+                  href="/order"
+                  action
+                  className="border-0 border-bottom rounded"
+                >
+                  <MDBIcon fas icon="chart-pie me-3" />
+                  Order List
+                </MDBListGroupItem>
+                <MDBListGroupItem
+                  tag="a"
+                  href="/profile"
+                  action
+                  className="border-0 border-bottom rounded"
+                >
+                  <MDBIcon fas icon="lock me-3" />
+                  Profile
+                </MDBListGroupItem>
+                <MDBListGroupItem
+                  tag="a"
+                  href="/"
+                  action
+                  onClick={handleLogout}
+                  className="border-0 border-bottom rounded"
+                >
+                  <MDBIcon far icon="chart-bar me-3" />
+                  logout
+                </MDBListGroupItem>
+              </div>
+            ) : (
+              <MDBListGroupItem
+                tag="a"
+                href="/login"
+                action
+                className="border-0 border-bottom rounded"
+              >
+                <MDBIcon fas icon="lock me-3" />
+                login
+              </MDBListGroupItem>
+            )}
           </MDBListGroup>
         </div>
       </MDBCollapse>

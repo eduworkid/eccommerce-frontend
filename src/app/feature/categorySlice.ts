@@ -20,7 +20,14 @@ const initialState: CategoryState = {
 export const getDataCategory = createAsyncThunk("category", async (_, thunkAPI) => {
   try {
  
-    const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API}category`);
+    const response = await axios.get(
+      `${import.meta.env.VITE_REACT_APP_API}category`,
+      {
+        headers: {
+          Authorization: localStorage.getItem("Authorization"),
+        },
+      }
+    );
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
